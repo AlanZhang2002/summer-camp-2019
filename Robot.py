@@ -1,10 +1,12 @@
 import wpilib
 
 class MyRobot(wpilib.TimedRobot):
-	
+	"""instance variables"""
+
+
 	# Runs once at the beginning, when the robot is turned on
 	def robotInit(self):
-
+		"""initialize robot parts here"""
 
 
 	# Runs once at the beginning of teleop mode
