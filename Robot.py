@@ -1,12 +1,14 @@
 import wpilib
+import ctre.WPI_TalonSRX
 
 class MyRobot(wpilib.TimedRobot):
-	"""instance variables"""
 
 
 	# Runs once at the beginning, when the robot is turned on
 	def robotInit(self):
 		"""initialize robot parts here"""
+		self.talon = ctre.WPI_TalonSRX(1)
+		self.joystick = wpilib.Joystick(0)
 
 
 	# Runs once at the beginning of teleop mode
