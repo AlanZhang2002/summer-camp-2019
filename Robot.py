@@ -1,5 +1,4 @@
 import wpilib
-import ctre.WPI_TalonSRX
 
 class MyRobot(wpilib.TimedRobot):
 
@@ -7,12 +6,12 @@ class MyRobot(wpilib.TimedRobot):
 	# Runs once at the beginning, when the robot is turned on
 	def robotInit(self):
 		"""initialize robot parts here"""
-		self.leftTalon1 = ctre.WPI_TalonSRX(15)
-		self.leftTalon2 = ctre.WPI_TalonSRX(14)
-		self.leftTalon3 = ctre.WPI_TalonSRX(13)
-		self.rightTalon1 = ctre.WPI_TalonSRX(20)
-		self.rightTalon2 = ctre.WPI_TalonSRX(1)
-		self.rightTalon3 = ctre.WPI_TalonSRX(2)
+		self.leftTalon1 = rev.CANSparkMax(15)
+		self.leftTalon2 = rev.CANSparkMax(14)
+		self.leftTalon3 = rev.CANSparkMax(13)
+		self.rightTalon1 = rev.CANSparkMax(20)
+		self.rightTalon2 = rev.CANSparkMax(1)
+		self.rightTalon3 = rev.CANSparkMax(2)
 
 		self.joystick1 = wpilib.Joystick(0)
 		self.joystick2 = wpilib.Joystick(1)
@@ -23,7 +22,7 @@ class MyRobot(wpilib.TimedRobot):
 
 	# Runs once at the beginning of teleop mode
 	def teleopInit(self):
-
+		return
 
 
 	# Runs repeatedly every 20ms in teleop mode
@@ -49,9 +48,10 @@ class MyRobot(wpilib.TimedRobot):
 
 	# Runs once at the beginning when disabled
 	def disabledInit(self):
-
+		return
 
 
 	# Runs repeatedly every 20ms while the robot is disabled
 	def disabledPeriodic(self):
 		# leave blank?
+		return
