@@ -7,12 +7,12 @@ class MyRobot(wpilib.TimedRobot):
 	# Runs once at the beginning, when the robot is turned on
 	def robotInit(self):
 		"""initialize robot parts here"""
-		self.leftTalon1 = ctre.WPI_TalonSRX(1)
-		self.leftTalon2 = ctre.WPI_TalonSRX(2)
-		self.leftTalon3 = ctre.WPI_TalonSRX(3)
-		self.rightTalon1 = ctre.WPI_TalonSRX(4)
-		self.rightTalon2 = ctre.WPI_TalonSRX(5)
-		self.rightTalon3 = ctre.WPI_TalonSRX(6)
+		self.leftTalon1 = ctre.WPI_TalonSRX(15)
+		self.leftTalon2 = ctre.WPI_TalonSRX(14)
+		self.leftTalon3 = ctre.WPI_TalonSRX(13)
+		self.rightTalon1 = ctre.WPI_TalonSRX(20)
+		self.rightTalon2 = ctre.WPI_TalonSRX(1)
+		self.rightTalon3 = ctre.WPI_TalonSRX(2)
 
 		self.joystick1 = wpilib.Joystick(0)
 		self.joystick2 = wpilib.Joystick(1)
@@ -35,12 +35,18 @@ class MyRobot(wpilib.TimedRobot):
 
 	# Runs once at the beginning of autonomous mode
 	def autonomousInit(self):
-
+		self.timer = 0
 
 
 	# Runs repeatedly every 20ms in autonomous mode
 	def autonomousPeriodic(self):
-
+		self.timer++
+		if self.timer < 150:
+			self.leftTalons.set(0.5)
+			self.rightTalons.set(-0.5)
+		else:
+			self.leftTalons.set(0)
+			self.rightTalons.set(0)
 
 
 	# Runs once at the beginning when disabled
