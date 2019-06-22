@@ -35,18 +35,19 @@ class MyRobot(wpilib.TimedRobot):
 
 	# Runs once at the beginning of autonomous mode
 	def autonomousInit(self):
-		self.timer = 0
+		self.target = 3000
+		self.leftTalon1.setSelectedSensorPosition(0, 0, 0)
+
 
 
 	# Runs repeatedly every 20ms in autonomous mode
 	def autonomousPeriodic(self):
-		self.timer++
-		if self.timer < 150:
-			self.leftTalons.set(0.5)
-			self.rightTalons.set(-0.5)
-		else:
-			self.leftTalons.set(0)
-			self.rightTalons.set(0)
+		if self.target < self.leftTalon1.getSelectedSensorPosition(0):
+			self.leftTalons.set(0.35)
+			self.rightTalons.set(-0.35)
+		elif self.target > self.leftTalon1.getSelectedSensorPosition(0):
+			self.leftTalons.set(-0.35)
+			self.rightTalons.set(0.35)
 
 
 	# Runs once at the beginning when disabled
