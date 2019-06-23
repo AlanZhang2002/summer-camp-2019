@@ -1,13 +1,14 @@
 import wpilib
+import rev
 
 class MyRobot(wpilib.IterativeRobot):
 	def robotInit(self):
 		"""
-        This function is called upon program startup and
-        should be used for any initialization code.
-        """
-        self.spark = rev.CANSparkMax(1, MotorType.kBrushless) #(deviceID, type)
-        self.joystick = wpilib.Joystick(0)
+		This function is called upon program startup and
+		should be used for any initialization code.
+		"""
+		self.spark = rev.CANSparkMax(1, rev.MotorType.kBrushless) #(deviceID, type)
+		self.joystick = wpilib.Joystick(0)
 
 	def autonomousInit(self):
 		"""This function is run once each time the robot enters the autonomous mode."""
@@ -29,4 +30,4 @@ class MyRobot(wpilib.IterativeRobot):
 
 
 if __name__ == "__main__":
-    wpilib.run(MyRobot)
+	wpilib.run(MyRobot)
