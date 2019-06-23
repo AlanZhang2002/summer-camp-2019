@@ -3,9 +3,9 @@ import wpilib
 class MyRobot(wpilib.IterativeRobot):
 	def robotInit(self):
 		"""
-        This function is called upon program startup and
-        should be used for any initialization code.
-        """
+		This function is called upon program startup and
+		should be used for any initialization code.
+		"""
 
 	def autonomousInit(self):
 		"""This function is run once each time the robot enters the autonomous mode."""
@@ -27,4 +27,4 @@ class MyRobot(wpilib.IterativeRobot):
 
 
 if __name__ == "__main__":
-    wpilib.run(MyRobot)
+	wpilib.run(MyRobot)
