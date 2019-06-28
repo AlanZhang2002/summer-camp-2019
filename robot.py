@@ -24,7 +24,7 @@ class MyRobot(wpilib.IterativeRobot):
 	def autonomousInit(self):
 		"""This function is run once each time the robot enters the autonomous mode."""
 		self.target = 60 #inches
-		self.leftSpark1.getEncoder().setPosition(0)
+		self.leftSpark1.getEncoder().setPosition(0.0)
 		self.leftSpark1.getEncoder().setPositionConversionFactor(18 * math.pi / 23) #copied from DrivetrainConstants in 2019-Private
 
 
@@ -37,7 +37,6 @@ class MyRobot(wpilib.IterativeRobot):
 		elif self.target > rotations:
 			self.leftSparks.set(-0.35)
 			self.rightSparks.set(0.35)
-
 
 	def teleopInit(self):
 		"""This function is run once each time the robot enters the teleoperated mode."""
