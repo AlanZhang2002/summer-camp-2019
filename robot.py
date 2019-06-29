@@ -22,6 +22,11 @@ class MyRobot(wpilib.IterativeRobot):
 		self.rightSparks = wpilib.SpeedControllerGroup(self.rightSpark1, self.rightSpark2, self.rightSpark3)
 
 		self.leftSpark1.setIdleMode(rev.IdleMode.kBrake)
+		self.leftSpark2.setIdleMode(rev.IdleMode.kBrake)
+		self.leftSpark3.setIdleMode(rev.IdleMode.kBrake)
+		self.rightSpark1.setIdleMode(rev.IdleMode.kBrake)
+		self.rightSpark2.setIdleMode(rev.IdleMode.kBrake)
+		self.rightSpark3.setIdleMode(rev.IdleMode.kBrake)
 
 	def autonomousInit(self):
 		"""This function is run once each time the robot enters the autonomous mode."""
