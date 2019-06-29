@@ -1,6 +1,7 @@
 import wpilib
 import rev
 import math
+from networktables import NetworkTables
 
 class MyRobot(wpilib.IterativeRobot):
 	def robotInit(self):
@@ -23,6 +24,8 @@ class MyRobot(wpilib.IterativeRobot):
 
 		self.openCloseSolenoid = wpilib.DoubleSolenoid(2, 5)
 		self.inOutSolenoid = wpilib.DoubleSolenoid(3, 4)
+
+		self.limelight = NetworkTables.getTable("limelight")
 
 	def autonomousInit(self):
 		"""This function is run once each time the robot enters the autonomous mode."""
@@ -47,8 +50,8 @@ class MyRobot(wpilib.IterativeRobot):
 
 	def teleopPeriodic(self):
 		"""This function is called periodically during operator control."""
-		self.leftSparks.set(-(self.joystick1.getY() - self.joystick2.getY()))
-		self.rightSparks.set(self.joystick1.getY() + self.joystick2.getY())
+		# self.leftSparks.set(-(self.joystick1.getY() - self.joystick2.getY())) commented out for vision
+		# self.rightSparks.set(self.joystick1.getY() + self.joystick2.getY())
 
 		if self.joystick1.getTrigger == True:
 			self.openCloseSolenoid.set(2)
@@ -59,6 +62,17 @@ class MyRobot(wpilib.IterativeRobot):
 			self.inOutSolenoid.set(1)
 		else:
 			self.inOutSolenoid.set(2)
+
+		self.numTarget = self.limelight.getNumber('tv', 0)
+		self.targetOffsetX = self.limelight.getNumber('tx', 0)
+
+		if self.numTarget : #idek if i did this right
+			if self.targetOffsetX < -0.5:
+				self.leftSparks.set(-(self.joystick1.getY + 0.5))
+				self.rightSparks.set(self.joystick1.getY - 0.5)
+			elif self.targetOffsetX > 0.5:
+				self.leftSparks.set(-(self.joystick1.getY - 0.5))
+				self.rightSparks.set(self.joystick1.getY + 0.5)
 
 	def disabledInit(self):
 		"""This function is run once each time the robot enters the disabled mode."""
