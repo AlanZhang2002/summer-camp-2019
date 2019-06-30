@@ -71,12 +71,12 @@ class MyRobot(wpilib.IterativeRobot):
 		self.leftSparks.set(-(self.joystick1.getY() - self.joystick2.getY()))
 		self.rightSparks.set(self.joystick1.getY() + self.joystick2.getY())
 
-		if self.joystick1.getTrigger == True:
+		if self.joystick1.getTrigger():
 			self.openCloseSolenoid.set(2)
 		else:
 			self.openCloseSolenoid.set(1)
 
-		if self.joystick2.getTrigger == True:
+		if self.joystick2.getTrigger():
 			self.inOutSolenoid.set(1)
 		else:
 			self.inOutSolenoid.set(2)
