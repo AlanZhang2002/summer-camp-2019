@@ -30,9 +30,9 @@ class MyRobot(wpilib.IterativeRobot):
 
 	def autonomousInit(self):
 		"""This function is run once each time the robot enters the autonomous mode."""
-		self.target = 60 #inches
+		self.target = 60
 		self.leftSpark1.getEncoder().setPosition(0.0)
-		self.leftSpark1.getEncoder().setPositionConversionFactor(18 * math.pi / 23) #copied from DrivetrainConstants in 2019-Private
+		self.leftSpark1.getEncoder().setPositionConversionFactor(18 * math.pi / 23)
 		self.allowable_error = 1
 		self.in_zone_count = 0
 		self.in_zone_threshold = 15
@@ -49,7 +49,7 @@ class MyRobot(wpilib.IterativeRobot):
 
 		if (self.in_zone_count < self.in_zone_threshold and not self.should_stop):
 			if self.target < rotations:
-				self.leftSparks.set(-0.1) #check if it moves forwards pls thank
+				self.leftSparks.set(-0.1)
 				self.rightSparks.set(0.1)
 			elif self.target > rotations:
 				self.leftSparks.set(0.1)
