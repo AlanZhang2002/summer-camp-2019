@@ -22,27 +22,49 @@ class MyRobot(wpilib.IterativeRobot):
 		self.leftSparks = wpilib.SpeedControllerGroup(self.leftSpark1, self.leftSpark2, self.leftSpark3)
 		self.rightSparks = wpilib.SpeedControllerGroup(self.rightSpark1, self.rightSpark2, self.rightSpark3)
 
+		self.leftSpark1.setIdleMode(rev.IdleMode.kBrake)
+		self.leftSpark2.setIdleMode(rev.IdleMode.kBrake)
+		self.leftSpark3.setIdleMode(rev.IdleMode.kBrake)
+		self.rightSpark1.setIdleMode(rev.IdleMode.kBrake)
+		self.rightSpark2.setIdleMode(rev.IdleMode.kBrake)
+		self.rightSpark3.setIdleMode(rev.IdleMode.kBrake)
+
 		self.openCloseSolenoid = wpilib.DoubleSolenoid(2, 5)
 		self.inOutSolenoid = wpilib.DoubleSolenoid(3, 4)
-
+		
 		self.limelight = NetworkTables.getTable("limelight")
 
 	def autonomousInit(self):
 		"""This function is run once each time the robot enters the autonomous mode."""
 		self.target = 60 #inches
-		self.leftSpark1.getEncoder().setPosition(0)
+		self.leftSpark1.getEncoder().setPosition(0.0)
 		self.leftSpark1.getEncoder().setPositionConversionFactor(18 * math.pi / 23) #copied from DrivetrainConstants in 2019-Private
+		self.allowable_error = 1
+		self.in_zone_count = 0
+		self.in_zone_threshold = 15
+		self.should_stop = False
 
 
 	def autonomousPeriodic(self):
-		rotations = 0 #self.leftSpark1.getEncoder().getPosition() #assertionerror for some reason
+		rotations = self.leftSpark1.getEncoder().getPosition()
 		"""This function is called periodically during autonomous."""
-		if self.target < rotations:
-			self.leftSparks.set(0.35) #check if it moves forwards pls thank
-			self.rightSparks.set(-0.35)
-		elif self.target > rotations:
-			self.leftSparks.set(-0.35)
-			self.rightSparks.set(0.35)
+		if (abs(self.target - rotations) < self.allowable_error):
+			self.in_zone_count += 1
+		else:
+			self.in_zone_count = 0
+
+		if (self.in_zone_count < self.in_zone_threshold and not self.should_stop):
+			if self.target < rotations:
+				self.leftSparks.set(-0.1) #check if it moves forwards pls thank
+				self.rightSparks.set(0.1)
+			elif self.target > rotations:
+				self.leftSparks.set(0.1)
+				self.rightSparks.set(-0.1)
+		else:
+			self.leftSparks.set(0)
+			self.rightSparks.set(0)
+			self.should_stop = True
+
 
 
 	def teleopInit(self):
