@@ -32,7 +32,7 @@ class MyRobot(wpilib.IterativeRobot):
 	def teleopPeriodic(self):
 		"""This function is called periodically during operator control."""
 		self.leftSparks.set(-self.joystick1.getY() - self.joystick2.getY())
-		self.rightSparks.set(self.joystick1.getY() - self.joystick2.getY()) #someone check this, idk if it is right
+		self.rightSparks.set(self.joystick1.getY() - self.joystick2.getY())
 
 	def disabledInit(self):
 		"""This function is run once each time the robot enters the disabled mode."""
