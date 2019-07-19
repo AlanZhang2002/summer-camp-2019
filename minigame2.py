@@ -1,0 +1,1 @@
+#minigame for advanced class

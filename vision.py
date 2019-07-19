@@ -1,6 +1,7 @@
 import wpilib
 import rev
 import math
+import time
 from networktables import NetworkTables
 
 class MyRobot(wpilib.IterativeRobot):
@@ -69,8 +70,9 @@ class MyRobot(wpilib.IterativeRobot):
 
     def teleopInit(self):
         """This function is run once each time the robot enters the teleoperated mode."""
-        self.limelight.putNumber('ledMode', 3)
-        self.limelight.putNumber('camMode', 0)
+        self.limelight.putNumber('ledMode', 1)
+        self.limelight.putNumber('camMode', 1)
+        self.first = False
 
     def teleopPeriodic(self):
         """This function is called periodically during operator control."""
@@ -86,21 +88,39 @@ class MyRobot(wpilib.IterativeRobot):
             self.inOutSolenoid.set(2)
 
         if self.joystick2.getRawButton(3): #change button number later
+            self.limelight.putNumber('ledMode', 3)
+            self.limelight.putNumber('camMode', 0)
+
             self.numTarget = self.limelight.getNumber('tv', None)
             print("numTarget: " + str(self.numTarget))
+
             self.targetOffsetX = self.limelight.getNumber('tx', None)
             print("targetOffsetX: " + str(self.targetOffsetX))
 
             if self.numTarget:
-                if self.targetOffsetX < -0.5:
-                    self.leftSparks.set(-(self.joystick1.getY + 0.5))
-                    self.rightSparks.set(self.joystick1.getY - 0.5)
-                elif self.targetOffsetX > 0.5:
-                    self.leftSparks.set(-(self.joystick1.getY - 0.5))
-                    self.rightSparks.set(self.joystick1.getY + 0.5)
+                if not self.first:
+                    self.visionTurnDirection = self.targetOffsetX / 100
+                else:
+                    self.visionTurnDirection = self.targetOffsetX * 0.01 + ((self.targetOffsetX - self.oldOffsetX) / (time.time() - self.oldTime)) * 0.0005 # PD loop right now
+
+                self.oldTime = time.time()
+                self.first = True
+                self.oldOffsetX = self.targetOffsetX
+
+                if abs(self.targetOffsetX) > 1.5:
+                    print("out of range")
+                    print("visionTurnDirection: " + str(self.visionTurnDirection))
+                    self.leftSparks.set(-(self.joystick1.getY() - self.visionTurnDirection))
+                    self.rightSparks.set(self.joystick1.getY() + self.visionTurnDirection)
+                else:
+                    self.leftSparks.set(-self.joystick1.getY())
+                    self.rightSparks.set(self.joystick1.getY())
         else:
-            self.leftSparks.set(-self.joystick1.getY() + self.joystick2.getX())
-            self.rightSparks.set(self.joystick1.getY() + self.joystick2.getX())
+            self.limelight.putNumber('ledMode', 1)
+            self.limelight.putNumber('camMode', 1)
+            self.leftSparks.set(-self.joystick1.getY() + self.joystick2.getX() / 2)
+            self.rightSparks.set(self.joystick1.getY() + self.joystick2.getX() / 2)
+            self.first = False
 
     def disabledInit(self):
         """This function is run once each time the robot enters the disabled mode."""
